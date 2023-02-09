@@ -1,0 +1,153 @@
+{% extends "base.html" %} 
+{% block content %} 
+
+<div id="wrapper">
+  
+  {% include "sidebar.html" %}
+  
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+      
+      {% include "topbar.html" %}
+
+      <!-- Container Fluid-->
+      <div class="container-fluid" id="container-wrapper">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+          <h1 class="h3 mb-0 text-gray-800">{{ page_title }}</h1>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Home</a></li>
+            <li class="breadcrumb-item">Master</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb }}</li>
+          </ol>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col">
+            <button class="btn btn-success" data-toggle="modal" data-target="#tambahSumberLimbah"><i class="fa fa-plus-square"></i> Tambah Sumber Limbah</button>
+          </div>
+        </div>
+
+        
+        <!-- Main Content -->
+        <div class="row">
+          <!-- Datatables -->
+          <div class="col-lg-12">
+            <div class="card mb-4">
+              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Data {{ breadcrumb }}</h6>
+              </div>
+              <div class="table-responsive p-3">
+                <table class="table align-items-center table-stripped" id="dataKategori">
+                  <thead class="thead-light">
+                    <tr>
+                      <th class="text-center">Kode</th>
+                      <th class="text-center">Deskripsi</th>
+                      <th class="text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for sl in sumber_limbah %}
+                    <tr>
+                      <td class="text-center">{{ sl.kode_sbrlbh }}</td>
+                      <td class="text-center">{{ sl.desk_sbrlbh }}</td>
+                      <td class="text-center">
+                        <button class="btn btn-sm btn-info" data-container="body" data-toggle="popover" data-placement="top" data-content="Detail Sbr Limbah"><i class="fa fa-list"></i></button>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Main Content -->
+
+
+        <!-- Modal Tambah Sumber Limbah -->
+        <div class="modal fade" id="tambahSumberLimbah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Sumber Limbah</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="kodeLimbah">Kode Limbah</label>
+                    <input type="text" name="kode_limbah" class="form-control" id="kodeLimbah" aria-describedby="kodeLimbahHelp" placeholder="Imput kode limbah">
+                    <small id="kodeLimbahHelp" class="form-text text-muted">NB: Pastikan kode limbah unik</small>
+                  </div>
+                  <div class="form-group">
+                    <label for="namaLimbah">Nama Limbah</label>
+                    <input type="text" name="nama_limbah" class="form-control" id="namaLimbah" placeholder="Input nama limbah">
+                  </div>
+                  <div class="form-group">
+                    <label for="deskripsiLimbah">Deskripsi Limbah</label>
+                    <input type="text" name="deskripsi_limbah" class="form-control" id="deskripsiLimbah" placeholder="Input deskripsi limbah">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
+                  <button type="button" class="btn btn-primary">Simpan</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- End Modal Tambah Sumber Limbah -->
+
+
+        <!-- Modal Logout -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabelLogout">Logout Sistem</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Apakah anda yakin keluar dari sistem?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
+                <a href="{% url 'logout' %}" class="btn btn-primary">Lanjut Logout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!---Container Fluid-->
+    </div>
+
+
+{% include "footer.html" %}
+{% load static %}
+
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/buttons.bootstrap5.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/jszip.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/pdfmake.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/vfs_fonts.js' %}"></script>
+<script src="{% static 'vendor/datatables/buttons.html5.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/buttons.print.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/buttons.colVis.min.js' %}"></script>
+
+<script>
+  $(document).ready(function () {
+    $('#dataKategori').DataTable({
+      lengthMenu: [15, 25, 50, 100],
+    });
+  });
+</script>
+
+{% endblock content %}

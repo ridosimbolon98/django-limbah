@@ -1,0 +1,274 @@
+{% extends "base.html" %} 
+{% block content %} 
+
+<div id="wrapper">
+  
+  {% include "sidebar.html" %}
+  
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+      
+      {% include "topbar.html" %}
+
+      <!-- Container Fluid-->
+      <div class="container-fluid" id="container-wrapper">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+          <h1 class="h3 mb-0 text-gray-800">{{ page_title }}</h1>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Home</a></li>
+            <li class="breadcrumb-item">Logbook</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb }}</li>
+          </ol>
+        </div>
+
+        <!-- Main Content -->
+        <!-- Form Transfer Limbah -->
+        <form>
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">{{ breadcrumb }}</h6>
+                </div>
+                <div class="card-body">
+                  <div class="form-group row">
+                    <label for="inputNoDok" class="col-sm-3 col-form-label">No Dokumen</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="inputNoDok" placeholder="Nomor Dokumen" autofocus required>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputBU" class="col-sm-3 col-form-label">Bisnis Unit</label>
+                    <div class="col-sm-9">
+                      <select class="form-control" id="inputBU" required>
+                        <option value="" hidden disabled-selected>-- Pilih Bisnis Unit --</option>
+                        {% for bu in idbu %}
+                        <option value="{{ bu.kode_bu }}">{{ bu.nama_bu }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputSubBU" class="col-sm-3 col-form-label">Sub Bisnis Unit</label>
+                    <div class="col-sm-9">
+                      <select class="form-control" id="inputSubBU" required>
+                        <option value="" hidden disabled-selected>-- Pilih Sub Bisnis Unit --</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputSubDept" class="col-sm-3 col-form-label">Sub Departemen</label>
+                    <div class="col-sm-9">
+                      <select class="form-control" id="inputSubDept" required>
+                        <option value="" hidden disabled-selected>-- Pilih Sub Departemen --</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputEvidence" class="col-sm-3 col-form-label">Evidence</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="inputEvidence" placeholder="Evidence Transfer Limbah" required>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputDesk" class="col-sm-3 col-form-label">Deskripsi <span class="text-danger">(*opsional)</span></label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="inputDesk" placeholder="Deskripsi Transfer Limbah" required>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Tipe Transaksi</label>
+                    <div class="col-sm-9">
+                      <div class="custom-control custom-radio">
+                        <input type="radio" id="trxIN" name="tipe_trx" class="custom-control-input">
+                        <label class="custom-control-label" for="trxIN">Masuk</label>
+                      </div>
+                      <div class="custom-control custom-radio">
+                        <input type="radio" id="trxOUT" name="tipe_trx" class="custom-control-input">
+                        <label class="custom-control-label" for="trxOUT">Keluar</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">{{ breadcrumb }} - Lanjutan</h6>
+                </div>
+                <div class="card-body">
+                  <div class="form-group row">
+                    <label for="inputGroup" class="col-sm-3 col-form-label">Group</label>
+                    <div class="col-sm-9">
+                      <select class="form-control" id="inputGroup" required>
+                        <option value="" hidden disabled-selected>-- Pilih Group Limbah --</option>
+                        {% for gl in group %}
+                        <option value="{{ gl.kode_grplbh }}">{{ gl.nama_grplbh }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputSubGroup" class="col-sm-3 col-form-label">Sub Group</label>
+                    <div class="col-sm-9">
+                      <select class="form-control" id="inputSubGroup" required>
+                        <option value="" hidden disabled-selected>-- Pilih Sub Group Limbah --</option>
+                        {% for sgl in subgroup %}
+                        <option value="{{ sgl.kode_subgrplbh }}">{{ sgl.nama_subgrplbh }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputKategori" class="col-sm-3 col-form-label">Kategori</label>
+                    <div class="col-sm-9">
+                      <select class="form-control" id="inputKategori" required>
+                        <option value="" hidden disabled-selected>-- Pilih Kategori Limbah --</option>
+                        {% for kl in kat_limbah %}
+                        <option value="{{ kl.kode_lbh }}">{{ kl.nama_lbh }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputSbrLimbah" class="col-sm-3 col-form-label">Sumber</label>
+                    <div class="col-sm-9">
+                      <select class="form-control" id="inputSbrLimbah" required>
+                        <option value="" hidden disabled-selected>-- Pilih Sumber Limbah --</option>
+                        {% for sbl in sumber_limbah %}
+                        <option value="{{ sbl.kode_sbrlbh }}">{{ sbl.desk_sbrlbh }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputQty" class="col-sm-3 col-form-label">Kuantitas</label>
+                    <div class="col-sm-9">
+                      <input type="number" class="form-control" id="inputQty" placeholder="Qty Limbah" required>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputTgl" class="col-sm-3 col-form-label">Tanggal</label>
+                    <div class="col-sm-9">
+                      <input type="date" class="form-control" id="inputTgl" required>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputTglMax" class="col-sm-3 col-form-label">Max Penyimpanan</label>
+                    <div class="col-sm-9">
+                      <input type="date" class="form-control" id="inputTglMax" required>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputTP" class="col-sm-3 col-form-label">Tujuan Penyimpanan</label>
+                    <div class="col-sm-9">
+                      <select class="form-control" id="inputTP" required>
+                        <option value="" hidden disabled-selected>-- Pilih Tujuan Penyimpanan --</option>
+                        {% for tpl in tp_limbah %}
+                        <option value="{{ tpl.kode_tplbh }}">{{ tpl.desk_tplbh }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group row">
+                    <div class="col-sm-10">
+                      <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
+                      <button type="reset" class="btn btn-secondary"><i class="fa fa-trash-restore"></i> Reset</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- End Main Content -->
+
+        <!-- Modal Logout -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabelLogout">Logout Sistem</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Apakah anda yakin keluar dari sistem?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
+                <a href="{% url 'logout' %}" class="btn btn-primary">Lanjut Logout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!---Container Fluid-->
+    </div>
+
+
+{% include "footer.html" %}
+{% load static %}
+
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/buttons.bootstrap5.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/jszip.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/pdfmake.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/vfs_fonts.js' %}"></script>
+<script src="{% static 'vendor/datatables/buttons.html5.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/buttons.print.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/buttons.colVis.min.js' %}"></script>
+
+<script>
+  window.CSRF_TOKEN = "{{ csrf_token }}";
+  $(document).ready(function () {
+    $('#dataLimbah').DataTable({
+      lengthMenu: [15, 25, 50, 100],
+    });
+  });
+</script>
+
+<script>
+let base_url = window.location.origin;
+let bu = document.getElementById("inputBU");
+
+bu.addEventListener("input", () => {
+  $(".s_sbu").remove();
+  $(".s_sdp").remove();
+  console.log(base_url);
+  $.ajax({
+    type: "POST",
+    url: base_url + "/so/getsbu/",
+    data: {data_bu: bu.value, csrfmiddlewaretoken: window.CSRF_TOKEN},
+    async: false,
+    success: function (result) {
+      console.log(result[1].length);
+      for (let index = 0; index < result[0].length; index++) {
+        $("#inputSubBU").append(
+          "<option class='s_sbu' value='" +result[0][index].kode_subbu +"'>" +
+            result[0][index].nama_subbu +
+          "</option>"
+        );
+      }
+      for (let index2 = 0; index2 < result[1].length; index2++) {
+        $("#inputSubDept").append(
+          "<option class='s_sdp' value='" +result[1][index2].kode_subdept +"'>" +
+            result[1][index2].nama_subdept +
+          "</option>"
+        );
+      }
+    },
+  });
+});
+</script>
+
+{% endblock content %}

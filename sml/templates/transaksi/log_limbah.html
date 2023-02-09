@@ -1,0 +1,130 @@
+{% extends "base.html" %} 
+{% block content %} 
+
+<div id="wrapper">
+  
+  {% include "sidebar.html" %}
+  
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+      
+      {% include "topbar.html" %}
+
+      <!-- Container Fluid-->
+      <div class="container-fluid" id="container-wrapper">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+          <h1 class="h3 mb-0 text-gray-800">{{ page_title }}</h1>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Home</a></li>
+            <li class="breadcrumb-item">Logbook</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb }}</li>
+          </ol>
+        </div>
+
+        <!-- Main Content -->
+        <div class="row">
+          <!-- Datatables -->
+          <div class="col-lg-12">
+            <div class="card mb-4">
+              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Data {{ breadcrumb }}</h6>
+              </div>
+              <div class="table-responsive p-3">
+                <table class="table align-items-center table-stripped" id="dataLimbah">
+                  <thead class="thead-light">
+                    <tr>
+                      <th class="text-center">No Dokumen</th>
+                      <th class="text-center">IDBU</th>
+                      <th class="text-center">Sub BU</th>
+                      <th class="text-center">Sub Dept</th>
+                      <th class="text-center">Group</th>
+                      <th class="text-center">Sub Group</th>
+                      <th class="text-center">Kategori</th>
+                      <th class="text-center">Sumber</th>
+                      <th class="text-center">Tipe</th>
+                      <th class="text-center">Qty</th>
+                      <th class="text-center">Tgl Limbah</th>
+                      <th class="text-center">Penyimpanan</th>
+                      <th class="text-center">Tgl Max</th>
+                      <th class="text-center">Status</th>
+                      <th class="text-center">Evidence</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for ll in logbook %}
+                    <tr>
+                      <td class="text-center">{{ ll.no_dokumen }}</td>
+                      <td class="text-center">{{ ll.kode_bu }}</td>
+                      <td class="text-center">{{ ll.kode_subbu.nama_subbu }}</td>
+                      <td class="text-center">{{ ll.kode_subdept }}</td>
+                      <td class="text-center">{{ ll.kode_grplbh.nama_grplbh }}</td>
+                      <td class="text-center">{{ ll.kode_subgrplbh.nama_subgrplbh }}</td>
+                      <td class="text-center">{{ ll.kode_lbh.nama_lbh }}</td>
+                      <td class="text-center">{{ ll.kode_sbrlbh.desk_sbrlbh }}</td>
+                      <td class="text-center">{{ ll.tipe_trx }}</td>
+                      <td class="text-center">{{ ll.qty_lbh }}</td>
+                      <td class="text-center">{{ ll.tgl_lbh }}</td>
+                      <td class="text-center">{{ ll.kode_tplbh.desk_tplbh }}</td>
+                      <td class="text-center">{{ ll.tgl_max_lbh }}</td>
+                      <td class="text-center">{{ ll.status }}</td>
+                      <td class="text-center">{{ ll.evidence }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Main Content -->
+
+        <!-- Modal Logout -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabelLogout">Logout Sistem</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Apakah anda yakin keluar dari sistem?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</button>
+                <a href="{% url 'logout' %}" class="btn btn-primary">Lanjut Logout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!---Container Fluid-->
+    </div>
+
+
+{% include "footer.html" %}
+{% load static %}
+
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/buttons.bootstrap5.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/jszip.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/pdfmake.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/vfs_fonts.js' %}"></script>
+<script src="{% static 'vendor/datatables/buttons.html5.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/buttons.print.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/buttons.colVis.min.js' %}"></script>
+
+<script>
+  $(document).ready(function () {
+    $('#dataLimbah').DataTable({
+      lengthMenu: [15, 25, 50, 100],
+    });
+  });
+</script>
+
+{% endblock content %}
